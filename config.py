@@ -1,13 +1,18 @@
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY") or "super_secret_key"
-    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://root:cristian1234@localhost/retea_comunicare"
+    SECRET_KEY = os.getenv("SECRET_KEY", "super_secret_key")
+    SQLALCHEMY_DATABASE_URI = f"mysql+mysqlconnector://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@localhost/{os.getenv('DB_NAME')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'app\\static\\uploads')
+
+    UPLOAD_FOLDER = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'app', 'static', 'uploads')
+
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
-    MAIL_USERNAME = 'gabi.vladoiu1389@gmail.com'
-    MAIL_PASSWORD = 'etzyclcjqycydrss'
-    MAIL_DEFAULT_SENDER = 'gabi.vladoiu1389@gmail.com'
+    MAIL_USERNAME = os.getenv("MAIL_USERNAME")
+    MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
+    MAIL_DEFAULT_SENDER = os.getenv("MAIL_DEFAULT_SENDER")
