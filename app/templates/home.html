@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniBridge Communication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Arial, sans-serif';
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero {
+            max-width: 800px;
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1d3557;
+        }
+
+        p {
+            font-size: 1.25rem;
+            color: #6c757d;
+        }
+
+        .btn-group {
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background-color: #457b9d;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d3557;
+        }
+
+        .btn-outline-primary {
+            border-color: #457b9d;
+            color: #457b9d;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #457b9d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="hero">
+            <h1>UniBridge Communication</h1>
+            <p>Conectează studenții și profesorii pentru o colaborare eficientă, materiale partajate și discuții interactive. Intră acum în platformă pentru a-ți gestiona cursurile și a comunica fără bariere!</p>
+
+            <div class="btn-group">
+                <a href="{{ url_for('main.login') }}" class="btn btn-primary btn-lg me-3">Autentificare</a>
+                <a href="{{ url_for('main.register') }}" class="btn btn-outline-primary btn-lg">Înregistrare</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+</body>
+</html>

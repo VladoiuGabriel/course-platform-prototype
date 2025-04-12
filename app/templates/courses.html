@@ -1,0 +1,10 @@
+<h2>Cursuri disponibile</h2>
+<ul>
+    {% for course in courses %}
+        <li>{{ course.name }} - {{ course.description }}
+            <form action="/courses/enroll/{{ course.id }}" method="POST">
+                <button type="submit">Înscrie-te</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creează un curs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2>Creează un curs nou</h2>
+        <form action="/dashboard/profesor/create_course" method="POST">
+            <div class="mb-3">
+                <label for="course_name" class="form-label">Numele cursului:</label>
+                <input type="text" name="course_name" id="course_name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="course_description" class="form-label">Descrierea cursului:</label>
+                <textarea name="course_description" id="course_description" class="form-control" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Creează cursul</button>
+        </form>
+
+        <a href="/dashboard/profesor" class="btn btn-secondary mt-3">Înapoi la Dashboard</a>
+
+        {% if access_key %}
+        <div class="alert alert-success mt-3" role="alert">
+            Curs creat cu succes! Cheia de acces este: <strong>{{ access_key }}</strong>
+        </div>
+        {% endif %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

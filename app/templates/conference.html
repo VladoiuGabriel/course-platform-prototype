@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conferință Video - {{ course.name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        video {
+            width: 45%;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h2>Conferință - {{ course.name }}</h2>
+        <button id="startCallButton" class="btn btn-success">Pornește apelul video</button>
+
+        <div>
+            <video id="localVideo" autoplay playsinline muted></video>
+            <video id="remoteVideo" autoplay playsinline></video>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <script>
+        const socket = io('/');
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+        let localStream;
+        let peerConnection;
+
+        const iceConfiguration = {
+            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+        };
+
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                localVideo.srcObject = stream;
+                localStream = stream;
+
+                socket.emit('join_room', {
+                    course_id: "{{ course.id }}",
+                    username: "{{ current_user.username }}"
+                });
+
+                socket.on('offer', handleOffer);
+                socket.on('answer', handleAnswer);
+                socket.on('ice-candidate', handleICECandidate);
+            });
+
+        function createPeerConnection() {
+            peerConnection = new RTCPeerConnection(iceConfiguration);
+            localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+            peerConnection.ontrack = event => {
+                remoteVideo.srcObject = event.streams[0];
+            };
+
+            peerConnection.onicecandidate = event => {
+                if (event.candidate) {
+                    socket.emit('ice-candidate', {
+                        course_id: "{{ course.id }}",
+                        candidate: event.candidate
+                    });
+                }
+            };
+        }
+
+        function handleOffer(data) {
+            createPeerConnection();
+            peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+            peerConnection.createAnswer().then(answer => {
+                peerConnection.setLocalDescription(answer);
+                socket.emit('answer', {
+                    course_id: "{{ course.id }}",
+                    answer: answer
+                });
+            });
+        }
+
+        function handleAnswer(data) {
+            peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+        }
+
+        function handleICECandidate(data) {
+            peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+        }
+
+        document.getElementById('startCallButton').addEventListener('click', () => {
+            createPeerConnection();
+            peerConnection.createOffer().then(offer => {
+                peerConnection.setLocalDescription(offer);
+                socket.emit('offer', {
+                    course_id: "{{ course.id }}",
+                    offer: offer
+                });
+            });
+        });
+    </script>
+</body>
+</html>
