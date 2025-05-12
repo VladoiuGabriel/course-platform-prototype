@@ -29,7 +29,7 @@ This is a prototype of a web-based course platform developed using Flask. The ap
 > This project requires Python 3.10+ and a local MySQL server.
 
 1. Clone the repository:
-->   git clone https://github.com/your-username/your-repo.git cd your-repo
+->   git clone https://github.com/VladoiuGabriel/course-platform-prototype cd course-platform-prototype
 2. Create and activate a virtual environment (optional but recommended):
 ->   python -m venv venv venv\Scripts\activate # for Windows
 3. Install dependencies:
